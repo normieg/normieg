@@ -20,8 +20,8 @@ import urllib.request
 from pathlib import Path
 
 from pixel import (
-    CYAN, DIM, GREEN, GREEN_DK, GREEN_HI, INK, LIGHT, LINE, ORANGE, OUTLINE, PANEL, PINK, PURPLE, SLOT, U, YELLOW,
-    gradient_text, grid_art, icon7, notched, rect, sunken, svg, tab, text, text_width, window,
+    DIM, GREEN, GREEN_DK, GREEN_HI, INK, LIGHT, LINE, OUTLINE, PANEL, SLOT, U,
+    gradient_text, grid_art, icon7, mono_palette, notched, rect, sunken, svg, tab, text, text_width, window,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -45,11 +45,11 @@ ABOUT = [
 ]
 
 CONTACTS = [
-    ("portfolio", "PORTFOLIO", "globe", GREEN),
-    ("email", "EMAIL", "mail", YELLOW),
-    ("linkedin", "LINKEDIN", "linkedin", CYAN),
-    ("tiktok", "TIKTOK", "note", PINK),
-    ("instagram", "INSTAGRAM", "camera", ORANGE),
+    ("portfolio", "PORTFOLIO", "globe"),
+    ("email", "EMAIL", "mail"),
+    ("linkedin", "LINKEDIN", "linkedin"),
+    ("tiktok", "TIKTOK", "note"),
+    ("instagram", "INSTAGRAM", "camera"),
 ]
 
 
@@ -79,8 +79,8 @@ def fetch_stats(token: str) -> dict:
           totalCount
           nodes {
             name stargazerCount
-            primaryLanguage { name color }
-            languages(first: 10, orderBy: {field: SIZE, direction: DESC}) { edges { size node { name color } } }
+            primaryLanguage { name }
+            languages(first: 10, orderBy: {field: SIZE, direction: DESC}) { edges { size node { name } } }
           }
         }
         contributionsCollection {
@@ -101,15 +101,14 @@ def fetch_stats(token: str) -> dict:
     years = graphql(token, f"query($login: String!) {{ user(login: $login) {{ {windows} }} }}", {"login": LOGIN})["user"]
     xp = sum(v["contributionCalendar"]["totalContributions"] for v in years.values())
 
-    langs: dict[str, dict] = {}
+    langs: dict[str, int] = {}
     for repo in user["repositories"]["nodes"]:
         if repo["name"] == LOGIN:  # this generator's own code isn't a project
             continue
         for edge in repo["languages"]["edges"]:
-            entry = langs.setdefault(edge["node"]["name"], {"size": 0, "color": edge["node"]["color"] or DIM})
-            entry["size"] += edge["size"]
-    total = sum(v["size"] for v in langs.values()) or 1
-    top = sorted(langs.items(), key=lambda kv: -kv[1]["size"])[:5]
+            langs[edge["node"]["name"]] = langs.get(edge["node"]["name"], 0) + edge["size"]
+    total = sum(langs.values()) or 1
+    top = sorted(langs.items(), key=lambda kv: -kv[1])[:5]
 
     cal = user["contributionsCollection"]["contributionCalendar"]
     return {
@@ -120,7 +119,7 @@ def fetch_stats(token: str) -> dict:
         "prs": user["pullRequests"]["totalCount"],
         "repos": user["repositories"]["totalCount"],
         "followers": user["followers"]["totalCount"],
-        "languages": [(name, v["color"], v["size"] / total) for name, v in top],
+        "languages": [(name, size / total) for name, size in top],
         "weeks": [[d["contributionLevel"] for d in w["contributionDays"]] for w in cal["weeks"]],
         "repo_meta": {r["name"]: r for r in user["repositories"]["nodes"]},
         "date": now.strftime("%Y-%m-%d"),
@@ -137,7 +136,8 @@ def fmt(n: int) -> str:
 
 # Panels -----------------------------------------------------------------
 
-SKY = ["#1A1240", "#24165A", "#351C6E", "#4E2380", "#6E2B88", "#93348A", "#BC4585", "#E05E7B", "#F7826C", "#FFA764"]
+SKY = ["#0A0B0D", "#0D0E11", "#101215", "#13151A", "#16191E", "#1A1D23", "#1E2128", "#22262D", "#272B33", "#2C3139"]
+STAR = "#D5D9DE"
 
 
 def hero() -> str:
@@ -169,31 +169,25 @@ def hero() -> str:
             continue
         delay = rng.uniform(0, 4)
         if i % 5 == 0:
-            scene += f'<g class="tw" style="animation-delay:{delay:.2f}s">{rect(sx, sy - U, U, 3 * U, "#FFF6D8")}{rect(sx - U, sy, 3 * U, U, "#FFF6D8")}</g>'
+            scene += f'<g class="tw" style="animation-delay:{delay:.2f}s">{rect(sx, sy - U, U, 3 * U, STAR)}{rect(sx - U, sy, 3 * U, U, STAR)}</g>'
         else:
-            scene += rect(sx, sy, U, U, "#FFF6D8", f' class="tw" style="animation-delay:{delay:.2f}s"')
+            scene += rect(sx, sy, U, U, STAR, f' class="tw" style="animation-delay:{delay:.2f}s"')
 
-    # Striped setting sun behind the character.
-    cx, cy, r = 548, horizon - 8, 64
-    for row in range(-r // U, 1):
-        yy = cy + row * U
+    # Moon, with clouds drifting in front of it.
+    cx, cy, r = 560, 76, 28
+    for row in range(-r // U, r // U + 1):
         half = int(math.sqrt(max(r * r - (row * U) ** 2, 0)) // U) * U
-        depth = -row * U
-        if depth < 40 and (depth // U) % 3 == 0:  # retro cut lines near the horizon
-            continue
-        color = "#FFF0A8" if depth > 52 else "#FFD36B" if depth > 26 else "#FF9F5A"
-        scene += rect(cx - half, yy, 2 * half, U, color)
-
-    # Drifting clouds.
+        scene += rect(cx - half, cy + row * U, 2 * half, U, STAR)
+    scene += rect(cx - 12, cy - 8, 8, 8, "#B3B8BF") + rect(cx + 8, cy + 4, 4, 4, "#B3B8BF") + rect(cx - 4, cy + 12, 4, 4, "#B3B8BF")
     cloud = ["..####......", ".######.###.", "############", ".##########."]
-    for i, (cy_, dur, delay, color) in enumerate([(56, 90, -10, "#B9548E"), (100, 120, -70, "#D8668A"), (140, 70, -40, "#F08C7E")]):
+    for i, (cy_, dur, delay, color) in enumerate([(56, 90, -10, "#20242B"), (84, 120, -70, "#2A2F37"), (140, 70, -40, "#252930")]):
         d = "".join(
             f"M{x * U} {y * U}h{U}v{U}h-{U}z" for y, row in enumerate(cloud) for x, c in enumerate(row) if c == "#"
         )
         scene += f'<g class="cl" style="animation-duration:{dur}s;animation-delay:{delay}s"><path transform="translate(0 {cy_})" fill="{color}" d="{d}"/></g>'
 
     # City skyline: far layer, near layer with windows.
-    for layer, (base, color, hmin, hmax) in enumerate([(horizon, "#3A1D5E", 5, 12), (horizon + 2 * U, "#1C1036", 3, 10)]):
+    for layer, (base, color, hmin, hmax) in enumerate([(horizon, "#181B20", 5, 12), (horizon + 2 * U, "#0E1013", 3, 10)]):
         bx = x0
         while bx < x0 + iw:
             bw = rng.randrange(6, 14) * U
@@ -203,16 +197,16 @@ def hero() -> str:
                 for wy in range(base - bh + 2 * U, base + 4 * U, 3 * U):
                     for wx in range(bx + U, bx + bw - U, 2 * U):
                         if rng.random() < 0.28:
-                            lit = rng.choice(["#FFD27A", "#FFB86B", "#FFE9A8"])
+                            lit = rng.choice(["#C9CDD3", "#9AA0A8", "#6E747D"])
                             flick = f' class="fl" style="animation-delay:{rng.uniform(0, 6):.2f}s"' if rng.random() < 0.12 else ""
                             scene += rect(wx, wy, U, U, lit, flick)
             bx += bw + rng.choice([0, U, 2 * U])
 
     # Rooftop ledge the character sits on.
     ledge = H - 2 * U - 7 * U
-    scene += rect(x0, ledge, iw, H, "#120A26") + rect(x0, ledge, iw, U, "#3A2466")
+    scene += rect(x0, ledge, iw, H, "#08090B") + rect(x0, ledge, iw, U, LINE)
     for lx in range(x0, x0 + iw, 12 * U):
-        scene += rect(lx, ledge + U, U, 6 * U, "#1E1238")
+        scene += rect(lx, ledge + U, U, 6 * U, "#14161A")
 
     # Animated character (sprite sheet scrolled in steps).
     px, py = 622, ledge - fh + 30
@@ -222,11 +216,14 @@ def hero() -> str:
     )
 
     # Title block.
-    scene += gradient_text("GREY.DEV", 40, 44, 8, [(range(0, 3), "#FFF0A8"), (range(3, 5), YELLOW), (range(5, 7), ORANGE)], shadow="#1A0F33")
-    scene += text("SOFTWARE ENGINEER", 44, 120, 3, INK, shadow="#1A0F33")
-    scene += text("WEB · MOBILE · GRAPHIC DESIGN", 44, 150, 2, "#FFE3F0", shadow="#1A0F33")
-    scene += f'<g class="bl">{text("▶", 44, 176, 2, GREEN_HI, shadow="#1A0F33")}</g>'
-    scene += text("GREY.IS-A.DEV", 60, 176, 2, GREEN_HI, shadow="#1A0F33")
+    shadow = "#000000"
+    grey_x = 40 + text_width("GREY", 8) + 8
+    scene += gradient_text("GREY", 40, 44, 8, [(range(0, 4), "#F2F3F5"), (range(4, 7), "#B9BEC6")], shadow=shadow)
+    scene += gradient_text(".DEV", grey_x, 44, 8, [(range(0, 4), GREEN_HI), (range(4, 7), GREEN)], shadow=shadow)
+    scene += text("SOFTWARE ENGINEER", 44, 120, 3, INK, shadow=shadow)
+    scene += text("WEB · MOBILE · GRAPHIC DESIGN", 44, 150, 2, DIM, shadow=shadow)
+    scene += f'<g class="bl">{text("▶", 44, 176, 2, GREEN, shadow=shadow)}</g>'
+    scene += text("GREY.IS-A.DEV", 60, 176, 2, GREEN, shadow=shadow)
 
     body += f'<clipPath id="scene"><rect x="{x0}" y="{y0}" width="{iw}" height="{ih}"/></clipPath><g clip-path="url(#scene)">{scene}</g>'
     style = (
@@ -237,7 +234,7 @@ def hero() -> str:
         ".bl{animation:bl 1s steps(1) infinite}@keyframes bl{50%{opacity:0}}"
         ".cl{animation:cl linear infinite}@keyframes cl{from{transform:translateX(-60px)}to{transform:translateX(860px)}}"
     )
-    return svg(W, H, "GREY.DEV: software engineer, web, mobile and graphic design. Grey's pixel character types on a laptop on a rooftop at sunset.", f"<defs>{defs}</defs>{body}", style)
+    return svg(W, H, "GREY.DEV: software engineer, web, mobile and graphic design. Grey's pixel character types on a laptop on a rooftop at night.", f"<defs>{defs}</defs>{body}", style)
 
 
 def about() -> str:
@@ -269,7 +266,7 @@ def about() -> str:
     # Covers slide right once a line is typed; the clip keeps them off the frame.
     inner_right = W - U - 2 * U
     body += f'<clipPath id="txt"><rect x="{tx - 4}" y="{top}" width="{inner_right - tx + 4}" height="{H - top}"/></clipPath><g clip-path="url(#txt)">{covers}</g>'
-    body += f'<g class="nx" style="animation-delay:{t:.2f}s">{text("▼", W - U - 52, H - U - 36, 2, YELLOW)}</g>'
+    body += f'<g class="nx" style="animation-delay:{t:.2f}s">{text("▼", W - U - 52, H - U - 36, 2, GREEN)}</g>'
     style += ".nx{animation:nx 1s steps(1) infinite both}@keyframes nx{0%{opacity:0}50%{opacity:1}}"
     alt = "Hi, I'm Grey! I make the web feel considered. Software engineer, web and graphic designer. Now building agent skills, SMS gateways and BaliFind. Off-screen: scooter rides, sunsets, coffee hops."
     return svg(W, H, alt, body, style)
@@ -287,7 +284,7 @@ def inventory() -> str:
         sx, sy = gx + (i % cols) * (slot + gap), gy + (i // cols) * (slot + gap)
         positions.append((sx, sy))
         body += sunken(sx, sy, slot, slot)
-        body += grid_art(ic["grid"], ic["palette"], sx + 16, sy + 16, 3)
+        body += grid_art(ic["grid"], mono_palette(ic["palette"]), sx + 16, sy + 16, 3)
 
     # Item description box.
     by = gy + 2 * slot + gap + 20
@@ -299,12 +296,12 @@ def inventory() -> str:
     labels = ""
     for i, ic in enumerate(icons):
         delay = 0 if i == 0 else -(period - i * slice_s)
-        label = text("▶ " + ic["name"], gx + 20, by + 18, 3, YELLOW) + text(ic["flavor"], gx + bw - 20, by + 22, 2, DIM, anchor="end")
+        label = text("▶", gx + 20, by + 18, 3, GREEN) + text(ic["name"], gx + 44, by + 18, 3, INK) + text(ic["flavor"], gx + bw - 20, by + 22, 2, DIM, anchor="end")
         labels += f'<g class="it{" i0" if i == 0 else ""}" style="animation-delay:{delay:.2f}s">{label}</g>'
     body += labels
 
     # Selection cursor: corner brackets that hop slot to slot.
-    c = YELLOW
+    c = GREEN
     k = 4 * U
     corners = (
         rect(-U, -U, k, U, c) + rect(-U, -U, U, k, c)
@@ -327,19 +324,18 @@ def inventory() -> str:
 def quest_card(i: int, quest: dict, meta: dict) -> str:
     w, h = 412, 204
     body = window(0, 0, w - U, h - U)
-    body += text(f"QUEST {i + 1:02d}", 24, 24, 2, GREEN_HI)
-    body += text(quest["title"], 24, 48, 3, YELLOW, shadow=OUTLINE)
+    body += text(f"QUEST {i + 1:02d}", 24, 24, 2, GREEN)
+    body += text(quest["title"], 24, 48, 3, INK, shadow=OUTLINE)
     for li, line in enumerate(textwrap.wrap(quest["desc"].upper(), 30)[:3]):
         body += text(line, 24, 84 + li * 20, 2, INK)
     lang = meta.get("primaryLanguage") or {}
     lname = (quest.get("lang") or lang.get("name") or "CODE").upper()
-    lcolor = lang.get("color") or PURPLE
     fy = h - 3 * U - 40  # divider; footer row sits 12px below, 14px above the frame
     body += rect(24, fy, w - U - 48, 2, LINE)
-    body += icon7("gem", 24, fy + 12, 2, lcolor) + text(lname, 44, fy + 12, 2, DIM)
+    body += icon7("gem", 24, fy + 12, 2, DIM) + text(lname, 44, fy + 12, 2, DIM)
     stars = fmt(meta.get("stargazerCount", 0))
     sx = w - U - 24 - text_width(stars, 2)
-    body += icon7("star", sx - 22, fy + 12, 2, YELLOW) + text(stars, sx, fy + 12, 2, INK)
+    body += icon7("star", sx - 22, fy + 12, 2, DIM) + text(stars, sx, fy + 12, 2, INK)
     return svg(w, h, f"{quest['title'].title()}: {quest['desc']}", body)
 
 
@@ -358,35 +354,35 @@ def stats(data: dict) -> str:
     lo, hi = 10 * (level - 1) ** 2, 10 * level ** 2
     lx = 36
     body += text("GREY", lx, 52, 3, INK, shadow=OUTLINE)
-    body += text(f"LV {level}", 396, 52, 3, YELLOW, anchor="end", shadow=OUTLINE)
+    body += text(f"LV {level}", 396, 52, 3, GREEN, anchor="end", shadow=OUTLINE)
     body += text("XP", lx, 86, 2, DIM)
     body += bar(lx + 32, 86, 30, round(30 * (xp - lo) / max(hi - lo, 1)), GREEN)
     body += text(f"{fmt(xp)} / {fmt(hi)} XP", 396, 108, 2, DIM, anchor="end")
     rows = [
-        ("heart", PINK, "CONTRIBUTIONS (1Y)", data["contributions"]),
-        ("gem", CYAN, "COMMITS (1Y)", data["commits"]),
-        ("flag", GREEN, "PRS MERGED", data["prs"]),
-        ("star", YELLOW, "STARS EARNED", data["stars"]),
-        ("chest", ORANGE, "PUBLIC REPOS", data["repos"]),
-        ("person", PURPLE, "FOLLOWERS", data["followers"]),
+        ("heart", "CONTRIBUTIONS (1Y)", data["contributions"]),
+        ("gem", "COMMITS (1Y)", data["commits"]),
+        ("flag", "PRS MERGED", data["prs"]),
+        ("star", "STARS EARNED", data["stars"]),
+        ("chest", "PUBLIC REPOS", data["repos"]),
+        ("person", "FOLLOWERS", data["followers"]),
     ]
-    for i, (icon, color, label, value) in enumerate(rows):
+    for i, (icon, label, value) in enumerate(rows):
         ry = 136 + i * 26
-        body += icon7(icon, lx, ry, 2, color) + text(label, lx + 24, ry, 2, INK) + text(fmt(value), 396, ry, 2, YELLOW, anchor="end")
+        body += icon7(icon, lx, ry, 2, DIM) + text(label, lx + 24, ry, 2, INK) + text(fmt(value), 396, ry, 2, INK, anchor="end")
 
     rx = 444
     body += rect(rx - 24, 44, 2, 268, LINE)
     body += text("TOP LANGUAGES", rx, 52, 2, DIM)
-    for i, (name, color, share) in enumerate(data["languages"]):
+    for i, (name, share) in enumerate(data["languages"]):
         ly = 84 + i * 46
         body += text(name, rx, ly, 2, INK) + text(f"{share * 100:.1f}%", 800, ly, 2, DIM, anchor="end")
-        body += bar(rx, ly + 20, 36, max(1, round(36 * share)), color)
+        body += bar(rx, ly + 20, 36, max(1, round(36 * share)), "#B9BEC6")
 
     # Contribution grid (last year).
     gy = 332
     body += rect(36, gy - 12, W - U - 72, 2, LINE)
     body += text("QUEST LOG", 36, gy, 2, DIM) + text(f"{fmt(data['contributions'])} CONTRIBUTIONS IN THE LAST YEAR", 800, gy, 2, DIM, anchor="end")
-    levels = {"NONE": SLOT, "FIRST_QUARTILE": GREEN_DK, "SECOND_QUARTILE": "#2BC22B", "THIRD_QUARTILE": GREEN, "FOURTH_QUARTILE": GREEN_HI}
+    levels = {"NONE": SLOT, "FIRST_QUARTILE": "#173D20", "SECOND_QUARTILE": GREEN_DK, "THIRD_QUARTILE": "#33A043", "FOURTH_QUARTILE": GREEN}
     weeks = data["weeks"][-53:]
     cell = 14
     ox = 36 + (W - U - 72 - len(weeks) * cell + 4) // 2
@@ -397,30 +393,30 @@ def stats(data: dict) -> str:
     alt = (
         f"Player stats: level {level}, {fmt(xp)} XP, {fmt(data['contributions'])} contributions and {fmt(data['commits'])} commits in the last year, "
         f"{data['prs']} merged PRs, {data['stars']} stars, {data['repos']} public repos, {data['followers']} followers. Top languages: "
-        + ", ".join(f"{n} {s * 100:.1f}%" for n, _, s in data["languages"])
+        + ", ".join(f"{n} {s * 100:.1f}%" for n, s in data["languages"])
     )
     return svg(W, H, alt, body, style)
 
 
-def button(label: str, icon: str, color: str) -> str:
+def button(label: str, icon: str) -> str:
     w, h = 160, 48
     body = window(0, 0, w - U, h - U)
     tw = 14 + 8 + text_width(label, 2)
     x = (w - U - tw) // 2
-    body += icon7(icon, x, 15, 2, color) + text(label, x + 22, 15, 2, INK)
+    body += icon7(icon, x, 15, 2, GREEN) + text(label, x + 22, 15, 2, INK)
     return svg(w, h, label.title(), body)
 
 
 def footer(date: str) -> str:
     H = 64
-    body = rect(0, 16, W, H - 16, "#2A1C12")
+    body = rect(0, 16, W, H - 16, "#121418")
     rng = random.Random(3)
     for x in range(0, W, U):
         tuft = rng.choice([0, 0, 1, 2])
-        body += rect(x, 16 - tuft * U, U, (tuft + 2) * U, GREEN if (x // U) % 3 else GREEN_DK)
+        body += rect(x, 16 - tuft * U, U, (tuft + 2) * U, "#33A043" if (x // U) % 3 else GREEN_DK)
         if rng.random() < 0.08:
-            body += rect(x, 16 + rng.randrange(3, 10) * U, U, U, "#4A3322")
-    body += text(f"THANKS FOR VISITING!  ·  GAME SAVED {date}", W // 2, 40, 2, "#F2D8B8", anchor="middle", shadow="#120A06")
+            body += rect(x, 16 + rng.randrange(3, 10) * U, U, U, "#1C1F24")
+    body += text(f"THANKS FOR VISITING!  ·  GAME SAVED {date}", W // 2, 40, 2, DIM, anchor="middle", shadow="#000000")
     return svg(W, H, f"Thanks for visiting! Last updated {date}.", body)
 
 
@@ -443,8 +439,8 @@ def main() -> None:
     }
     for i, quest in enumerate(QUESTS):
         files[f"quest-{quest['repo'].lower()}.svg"] = quest_card(i, quest, data["repo_meta"].get(quest["repo"], {}))
-    for key, label, icon, color in CONTACTS:
-        files[f"btn-{key}.svg"] = button(label, icon, color)
+    for key, label, icon in CONTACTS:
+        files[f"btn-{key}.svg"] = button(label, icon)
     for name, content in files.items():
         (out / name).write_text(content, encoding="utf-8")
     print(f"rendered {len(files)} files to {out}")

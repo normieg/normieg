@@ -10,22 +10,17 @@ from html import escape
 
 U = 4  # one "art pixel" for frames and decorations
 
-# Palette ---------------------------------------------------------------
-INK = "#F4F1FF"
-DIM = "#9A96CF"
-OUTLINE = "#07060F"
-PANEL = "#1B1838"
-SLOT = "#13112A"
-LINE = "#2E2A5C"
-LIGHT = "#4E48A0"
-GREEN = "#3EDD3A"
-GREEN_HI = "#7CF56E"
-GREEN_DK = "#1CA31C"
-YELLOW = "#FFD447"
-ORANGE = "#FF8C42"
-PINK = "#FF5E8A"
-CYAN = "#5CE1E6"
-PURPLE = "#A78BFA"
+# Palette: neutral greys with a single green accent ---------------------
+INK = "#E6E8EB"
+DIM = "#868C96"
+OUTLINE = "#060708"
+PANEL = "#16181C"
+SLOT = "#0E0F12"
+LINE = "#262A31"
+LIGHT = "#3A3F48"
+GREEN = "#4FD15A"
+GREEN_HI = "#8FE89A"
+GREEN_DK = "#1F6E2A"
 
 # 5x7 font -------------------------------------------------------------
 _GLYPHS = {
@@ -181,6 +176,24 @@ def grid_art(grid: list[str], palette: dict[str, str], x: int, y: int, scale: in
     return out
 
 
+def mono_palette(palette: dict[str, str]) -> dict[str, str]:
+    """Greyscale an icon palette, spreading its colors (ranked by lightness)
+    evenly across a fixed grey range so multi-color logos keep their shapes."""
+    def lum(color: str) -> float:
+        r, g, b = (int(color[i:i + 2], 16) for i in (1, 3, 5))
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+    ranked = sorted(palette, key=lambda code: lum(palette[code]))
+    if len(ranked) == 1:
+        return {ranked[0]: "#C8CCD2"}
+    lo, hi = 96, 232
+    out = {}
+    for i, code in enumerate(ranked):
+        v = round(lo + (hi - lo) * i / (len(ranked) - 1))
+        out[code] = f"#{v:02X}{v:02X}{v:02X}"
+    return out
+
+
 def rect(x: int, y: int, w: int, h: int, fill: str, extra: str = "") -> str:
     return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{fill}"{extra}/>'
 
@@ -209,7 +222,7 @@ def sunken(x: int, y: int, w: int, h: int, fill: str = SLOT) -> str:
     )
 
 
-def tab(label: str, x: int, y: int, fill: str = GREEN, ink: str = OUTLINE) -> str:
+def tab(label: str, x: int, y: int, fill: str = INK, ink: str = OUTLINE) -> str:
     """Title plate that overlaps the top edge of a window."""
     w = text_width(label, 2) + 6 * U
     return notched(x, y, w, 8 * U, OUTLINE) + rect(x + U, y + U, w - 2 * U, 6 * U, fill) + rect(x + U, y + 6 * U, w - 2 * U, U, "#000", ' fill-opacity=".18"') + text(label, x + 3 * U, y + 9, 2, ink)

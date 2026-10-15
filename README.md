@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/normieg/normieg/output/hero.svg" width="100%" alt="GREY.DEV: software engineer, web, mobile and graphic design. Grey's pixel character types on a laptop on a rooftop at sunset.">
+<img src="https://raw.githubusercontent.com/normieg/normieg/output/hero.svg" width="100%" alt="GREY.DEV: software engineer, web, mobile and graphic design. Grey's pixel character types on a laptop on a rooftop at night.">
 
 <img src="https://raw.githubusercontent.com/normieg/normieg/output/about.svg" width="100%" alt="Hi, I'm Grey! I make the web feel considered. Software engineer, web and graphic designer. Now building agent skills, SMS gateways and BaliFind. Off-screen: scooter rides, sunsets, coffee hops.">
 

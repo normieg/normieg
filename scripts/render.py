@@ -103,6 +103,8 @@ def fetch_stats(token: str) -> dict:
 
     langs: dict[str, dict] = {}
     for repo in user["repositories"]["nodes"]:
+        if repo["name"] == LOGIN:  # this generator's own code isn't a project
+            continue
         for edge in repo["languages"]["edges"]:
             entry = langs.setdefault(edge["node"]["name"], {"size": 0, "color": edge["node"]["color"] or DIM})
             entry["size"] += edge["size"]

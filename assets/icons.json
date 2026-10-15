@@ -1,0 +1,437 @@
+[
+ {
+  "key": "typescript",
+  "name": "TYPESCRIPT",
+  "flavor": "TYPE-SAFE ARMOR. +10 CONFIDENCE",
+  "palette": {
+   "A": "#3178C6",
+   "B": "#FFFFFF"
+  },
+  "grid": [
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AABBBBBBBABBBBAA",
+   "AAAAABAAABBAAAAA",
+   "AAAAABAAABBBAAAA",
+   "AAAAABAAAABBBBAA",
+   "AAAAABAAAAAABBAA",
+   "AAAAABAAAAAAABBA",
+   "AAAAABAAABBBBBAA",
+   "AAAAAAAAAAABAAAA",
+   "AAAAAAAAAAAAAAAA"
+  ]
+ },
+ {
+  "key": "javascript",
+  "name": "JAVASCRIPT",
+  "flavor": "RUNS EVERYWHERE. HANDLE WITH CARE",
+  "palette": {
+   "A": "#F7DF1E",
+   "B": "#1C1C1C"
+  },
+  "grid": [
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAABBAAA",
+   "AAAAAAABBABBBBAA",
+   "AAAAAAABBABBAAAA",
+   "AAAAAAABBABBBAAA",
+   "AAAAAAABBAAABBAA",
+   "AAAAAAABBAAAABBA",
+   "AAAAABBBAABBBBAA",
+   "AAAAABBAAAABBAAA",
+   "AAAAAAAAAAAAAAAA"
+  ]
+ },
+ {
+  "key": "react",
+  "name": "REACT",
+  "flavor": "COMPONENT MAGIC. RE-RENDERS ON CUE",
+  "palette": {
+   "A": "#61DAFB"
+  },
+  "grid": [
+   "................",
+   "....AAA..AAA....",
+   "...A...AA...A...",
+   "...A...AA...A...",
+   "...A..AAAA..A...",
+   "...AAAA..AAAA...",
+   ".A..AA....AA..A.",
+   "A...A..AA..A...A",
+   "A...A..AA..A...A",
+   ".A..AA....AA..A.",
+   "...AAAA..AAAA...",
+   "...A..AAAA..A...",
+   "...A...AA...A...",
+   "...A...AA...A...",
+   "....AAA..AAA....",
+   "................"
+  ]
+ },
+ {
+  "key": "expo",
+  "name": "EXPO",
+  "flavor": "ONE CODEBASE, PHONES EVERYWHERE",
+  "palette": {
+   "A": "#E8ECFF"
+  },
+  "grid": [
+   "................",
+   "......AAAA......",
+   "......AAAA......",
+   ".....AAAAAA.....",
+   "....AAAAAAAA....",
+   "....AAAAAAAA....",
+   "...AAAA..AAAA...",
+   "...AAAA..AAAA...",
+   "..AAAA....AAAA..",
+   "..AAA......AAA..",
+   ".AAAA......AAAA.",
+   ".AAA........AAA.",
+   "AAAA........AAAA",
+   "AAA..........AAA",
+   "AA............AA",
+   "................"
+  ]
+ },
+ {
+  "key": "tailwindcss",
+  "name": "TAILWIND CSS",
+  "flavor": "UTILITY BELT FOR FAST STYLING",
+  "palette": {
+   "A": "#06B6D4"
+  },
+  "grid": [
+   "................",
+   "................",
+   "................",
+   "......AAAA......",
+   ".....AAAAAA.....",
+   "....A..AAAAA...A",
+   "........AAAAAAA.",
+   "..........AAAA..",
+   "..AAAA..........",
+   ".AAAAAAA........",
+   "....AAAAA..A....",
+   ".....AAAAAA.....",
+   "......AAAA......",
+   "................",
+   "................",
+   "................"
+  ]
+ },
+ {
+  "key": "vite",
+  "name": "VITE",
+  "flavor": "INSTANT DEV SERVER. SPEED +99",
+  "palette": {
+   "A": "#BD34FE",
+   "B": "#FFC517"
+  },
+  "grid": [
+   "...AAAAAAAAAAA..",
+   "...AAAAAAAAAA...",
+   "..AAAAAAAAAAA...",
+   ".AAAAAAAAAAA....",
+   "AAAAABBBBBB.....",
+   "AAAAABBBBBBB....",
+   "......BBBBBBAAAA",
+   ".....BBBBBBBAAA.",
+   "....ABBBBBBBAA..",
+   "....ABBBBBBBA...",
+   "...AABBBBBBBA...",
+   "........BBBB....",
+   "........BBB.....",
+   "........BB......",
+   "........BB......",
+   "........B......."
+  ]
+ },
+ {
+  "key": "html5",
+  "name": "HTML5",
+  "flavor": "THE FOUNDATION STONE",
+  "palette": {
+   "A": "#E34F26",
+   "B": "#FFFFFF"
+  },
+  "grid": [
+   ".AAAAAAAAAAAAAA.",
+   ".AAAAAAAAAAAAAA.",
+   ".AAAAAAAAAAAAAA.",
+   ".AAABBBBBBBBAAA.",
+   ".AAABBBBBBBBAAA.",
+   ".AAABBAAAAAAAAA.",
+   "..AABBAAAAAAAA..",
+   "..AABBBBBBBBAA..",
+   "..AAAAAAAABBAA..",
+   "..AABBAAAABBAA..",
+   "..AABBAAAABBAA..",
+   "..AABBBBBBBBAA..",
+   "..AAAAABBAAAAA..",
+   "..AAAAAAAAAAAA..",
+   "...AAAAAAAAAA...",
+   "......AAAA......"
+  ]
+ },
+ {
+  "key": "css",
+  "name": "CSS",
+  "flavor": "PAINT, LAYOUT AND MOTION",
+  "palette": {
+   "A": "#663399",
+   "B": "#FFFFFF"
+  },
+  "grid": [
+   "AAAAAAAAAAAAAAA.",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAAA",
+   "AAAABBBABBBABBAA",
+   "AAAABAAABAAABAAA",
+   "AAAABAAABBAABBAA",
+   "AAAABAAAAABAABBA",
+   "AAAABABABABABBBA",
+   "AAAAABAAABAABBAA",
+   ".AAAAAAAAAAAAAA."
+  ]
+ },
+ {
+  "key": "php",
+  "name": "PHP",
+  "flavor": "POWERS CAMPUS SYSTEMS",
+  "palette": {
+   "P": "#777BB4",
+   "W": "#FFFFFF",
+   "D": "#4F5B93"
+  },
+  "grid": [
+   "................",
+   "................",
+   "................",
+   "....PPPPPPPP....",
+   "..PPPPPPPPPPPP..",
+   ".PPWWWPWPWPWWWP.",
+   "PPPWPWPWPWPWPWPP",
+   "PPPWWWPWWWPWWWPP",
+   "PPPWPPPWPWPWPPPP",
+   "PPPWPPPWPWPWPPPP",
+   ".PPPPPPPPPPPPPP.",
+   "..DPPPPPPPPPPD..",
+   "....DDDDDDDD....",
+   "................",
+   "................",
+   "................"
+  ]
+ },
+ {
+  "key": "python",
+  "name": "PYTHON",
+  "flavor": "SCRIPTS AND AGENT SKILLS",
+  "palette": {
+   "A": "#3776AB",
+   "B": "#FFD43B"
+  },
+  "grid": [
+   ".....AAAAAA.....",
+   "....A.AAAAAA....",
+   "....AAAAAAAA....",
+   "....AAAAAAAA....",
+   ".AAAAAAAAAABBBB.",
+   "AAAAAAAAAABBBBBB",
+   "AAAAAAAAABBBBBBB",
+   "AAAAAAAABBB.BBBB",
+   "AAAA.AABBBBBBBBB",
+   "AAAAAABBBBBBBBBB",
+   "AAAAABBBBBBBBBBB",
+   ".AAABBBBBBBBBBB.",
+   "....BBBBBBBB....",
+   "....BBBBBBBB....",
+   "....BBBBBB.B....",
+   ".....BBBBBB....."
+  ]
+ },
+ {
+  "key": "postgresql",
+  "name": "POSTGRESQL",
+  "flavor": "RELIABLE RELATIONAL VAULT",
+  "palette": {
+   "L": "#4169E1",
+   "D": "#2B4A9E",
+   "W": "#FFFFFF"
+  },
+  "grid": [
+   "................",
+   "....LLLLLLLL....",
+   "..LLLLLLLLLLLL..",
+   ".LLLLLLLLLLLLLL.",
+   "LLLDLLLLLLLLDLLL",
+   "LLLDLWLLLLWLDLLL",
+   "LLLDLLLLLLLLDLLL",
+   "LLLDDLLLLLLDDLLL",
+   ".LLL.LLLLLL.LLL.",
+   "..L..LLLLLL..L..",
+   ".....WLLLLW.....",
+   "......LLLL......",
+   "......LLLL......",
+   ".......LLL......",
+   "........LLL.....",
+   ".........LL....."
+  ]
+ },
+ {
+  "key": "mysql",
+  "name": "MYSQL",
+  "flavor": "CLASSIC DATA CHEST",
+  "palette": {
+   "B": "#4479A1",
+   "L": "#6FA3C9",
+   "D": "#2E5878",
+   "O": "#F29111"
+  },
+  "grid": [
+   "................",
+   "...DDDDDDDDDD...",
+   ".DDLLLLLLLLLLDD.",
+   ".DLLLLLLLLLLLLD.",
+   ".BDDLLLLLLLLDDB.",
+   ".BBBDDDDDDDDBBB.",
+   ".BBBBBBBBBBBBBB.",
+   ".OOBBBBBBBBBBOO.",
+   ".BBOOOOOOOOOOBB.",
+   ".BBBBBBBBBBBBBB.",
+   ".BBBBBBBBBBBBBB.",
+   ".OOBBBBBBBBBBOO.",
+   ".BBOOOOOOOOOOBB.",
+   ".DBBBBBBBBBBBBD.",
+   "..DDBBBBBBBBDD..",
+   "....DDDDDDDD...."
+  ]
+ },
+ {
+  "key": "supabase",
+  "name": "SUPABASE",
+  "flavor": "AUTH + DATABASE IN ONE SPELL",
+  "palette": {
+   "A": "#3FCF8E"
+  },
+  "grid": [
+   "......AA........",
+   "......AA........",
+   ".....AAA........",
+   "....AAAA........",
+   "...AAAAA........",
+   "..AAAAAA........",
+   "..AAAAAAAAAAAAAA",
+   ".AAAAAAAAAAAAAAA",
+   "AAAAAAAAAAAAAAA.",
+   "AAAAAAAAAAAAAA..",
+   "........AAAAAA..",
+   "........AAAAA...",
+   "........AAAA....",
+   "........AAA.....",
+   "........AA......",
+   "........AA......"
+  ]
+ },
+ {
+  "key": "convex",
+  "name": "CONVEX",
+  "flavor": "REACTIVE BACKEND, REALTIME SYNC",
+  "palette": {
+   "A": "#F3B01C",
+   "B": "#8D2676",
+   "C": "#EE342F"
+  },
+  "grid": [
+   "......AAAAA.....",
+   "...AAAA.AAAAA...",
+   "..AAAAAAAAAAAA..",
+   ".AAAAAAA...AAAA.",
+   ".BAAAA.....AAAC.",
+   ".BBBA.......CCCC",
+   "BBBB........CCCC",
+   "BBB.........CCCC",
+   "BBB.........CCC.",
+   "BBB.........CCC.",
+   ".BBB........CC.C",
+   ".B.BBB.......CC.",
+   ".BBBBBBBC.CCCCC.",
+   "..BBBBBBCCCCCC..",
+   "....BBBBCCCCC...",
+   ".....BBBCCC....."
+  ]
+ },
+ {
+  "key": "figma",
+  "name": "FIGMA",
+  "flavor": "DESIGN BEFORE YOU BUILD",
+  "palette": {
+   "R": "#F24E1E",
+   "S": "#FF7262",
+   "P": "#A259FF",
+   "B": "#1ABCFE",
+   "G": "#0ACF83"
+  },
+  "grid": [
+   "....RRRRSSSS....",
+   "...RRRRRSSSSS...",
+   "...RRRRRSSSSS...",
+   "...RRRRRSSSSS...",
+   "....RRRRSSSS....",
+   "....PPPP.BBB....",
+   "...PPPPPBBBBB...",
+   "...PPPPPBBBBB...",
+   "...PPPPPBBBBB...",
+   "....PPPP.BBB....",
+   "....GGGG........",
+   "...GGGGG........",
+   "...GGGGG........",
+   "...GGGG.........",
+   "....GG..........",
+   "................"
+  ]
+ },
+ {
+  "key": "claude",
+  "name": "CLAUDE",
+  "flavor": "AI PARTY MEMBER",
+  "palette": {
+   "A": "#D97757"
+  },
+  "grid": [
+   "....AA...A......",
+   "....AA...A......",
+   "....AA..AA..AA..",
+   ".AA..AA.AA.AAA..",
+   "..AA.AA.AAAAA...",
+   "...AAAAAAAAA....",
+   "....AAAAAAA...AA",
+   "AAA...AAAAAAAAA.",
+   ".AAAAAAAAAAA....",
+   ".....AAAAAAAAAAA",
+   "...AAAAAAAAA....",
+   "..AA..A.AAAAA...",
+   ".....A.AA.AAAA..",
+   "....A..AA..A....",
+   "....A..A...A....",
+   ".......A........"
+  ]
+ }
+]
